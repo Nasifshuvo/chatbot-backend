@@ -1,0 +1,202 @@
+[
+  {
+    "id": 1,
+    "type": "Single Family Home",
+    "budget": "$250,000",
+    "area": "1500 sqft",
+    "location": "123 Elm Street, Springfield",
+    "bedrooms": 3,
+    "bathrooms": 2,
+    "photo": "https://via.placeholder.com/150"
+  },
+  {
+    "id": 2,
+    "type": "Studio",
+    "location": "1414 Urban St, City Center",
+    "budget": "$150,000",
+    "area": "500 sqft",
+    "bedrooms": 0,
+    "bathrooms": 1,
+    "photo": "https://via.placeholder.com/150"
+  },
+  {
+    "id": 3,
+    "type": "Townhouse",
+    "budget": "$350,000",
+    "area": "1800 sqft",
+    "location": "789 Pine Lane, Gotham",
+    "bedrooms": 4,
+    "bathrooms": 3,
+    "photo": "https://via.placeholder.com/150"
+  },
+  {
+    "id": 4,
+    "type": "Apartment",
+    "budget": "$200,000",
+    "area": "900 sqft",
+    "location": "101 Maple Drive, Star City",
+    "bedrooms": 1,
+    "bathrooms": 1,
+    "photo": "https://via.placeholder.com/150"
+  },
+  {
+    "id": 5,
+    "type": "Villa",
+    "budget": "$500,000",
+    "area": "2500 sqft",
+    "location": "202 Birch Road, Central City",
+    "bedrooms": 5,
+    "bathrooms": 4,
+    "photo": "https://via.placeholder.com/150"
+  },
+  {
+    "id": 6,
+    "type": "Cottage",
+    "budget": "$180,000",
+    "area": "800 sqft",
+    "location": "303 Willow Way, Smalltown",
+    "bedrooms": 2,
+    "bathrooms": 1,
+    "photo": "https://via.placeholder.com/150/FF5733/FFFFFF?text=Cottage"
+  },
+  {
+    "id": 7,
+    "type": "Loft",
+    "budget": "$400,000",
+    "area": "1600 sqft",
+    "location": "404 Cedar Street, Big City",
+    "bedrooms": 1,
+    "bathrooms": 2,
+    "photo": "https://via.placeholder.com/150/33FF57/FFFFFF?text=Loft"
+  },
+  {
+    "id": 8,
+    "type": "Bungalow",
+    "budget": "$220,000",
+    "area": "1100 sqft",
+    "location": "505 Spruce Avenue, Oldtown",
+    "bedrooms": 3,
+    "bathrooms": 2,
+    "photo": "https://via.placeholder.com/150/3357FF/FFFFFF?text=Bungalow"
+  },
+  {
+    "id": 9,
+    "type": "Duplex",
+    "budget": "$350,000",
+    "area": "1400 sqft",
+    "location": "606 Birch Lane, Newtown",
+    "bedrooms": 4,
+    "bathrooms": 3,
+    "photo": "https://via.placeholder.com/150/FF33A1/FFFFFF?text=Duplex"
+  },
+  {
+    "id": 10,
+    "type": "Mansion",
+    "budget": "$1,200,000",
+    "area": "5000 sqft",
+    "location": "707 Palm Drive, Luxury City",
+    "bedrooms": 6,
+    "bathrooms": 5,
+    "photo": "https://via.placeholder.com/150/FF33FF/FFFFFF?text=Mansion"
+  },
+  {
+    "id": 11,
+    "type": "Farmhouse",
+    "budget": "$300,000",
+    "area": "2000 sqft",
+    "location": "808 Farm Road, Countryside",
+    "bedrooms": 5,
+    "bathrooms": 3,
+    "photo": "https://via.placeholder.com/150/33A1FF/FFFFFF?text=Farmhouse"
+  },
+  {
+    "id": 12,
+    "type": "Ranch",
+    "budget": "$450,000",
+    "area": "2500 sqft",
+    "location": "909 Ranch Lane, Rural Area",
+    "bedrooms": 4,
+    "bathrooms": 3,
+    "photo": "https://via.placeholder.com/150/A1FF33/FFFFFF?text=Ranch"
+  },
+  {
+    "id": 13,
+    "type": "Penthouse",
+    "budget": "$800,000",
+    "area": "1800 sqft",
+    "location": "1010 Skyline Blvd, Metropolis",
+    "bedrooms": 3,
+    "bathrooms": 2,
+    "photo": "https://via.placeholder.com/150/FF5733/FFFFFF?text=Penthouse"
+  },
+  {
+    "id": 14,
+    "type": "Chalet",
+    "budget": "$600,000",
+    "area": "2200 sqft",
+    "location": "1111 Mountain Road, Alpine Town",
+    "bedrooms": 4,
+    "bathrooms": 3,
+    "photo": "https://via.placeholder.com/150/33FF57/FFFFFF?text=Chalet"
+  },
+  {
+    "id": 15,
+    "type": "Villa",
+    "budget": "$750,000",
+    "area": "3000 sqft",
+    "location": "1212 Ocean Drive, Beach City",
+    "bedrooms": 5,
+    "bathrooms": 4,
+    "photo": "https://via.placeholder.com/150/3357FF/FFFFFF?text=Villa"
+  },
+  {
+    "id": 16,
+    "type": "Cottage",
+    "budget": "$200,000",
+    "area": "950 sqft",
+    "location": "1313 Lakeview Road, Lakeside",
+    "bedrooms": 2,
+    "bathrooms": 1,
+    "photo": "https://via.placeholder.com/150/FF33A1/FFFFFF?text=Cottage"
+  },
+  {
+    "id": 17,
+    "type": "Studio",
+    "budget": "$150,000",
+    "area": "500 sqft",
+    "location": "1414 Urban St, City Center",
+    "bedrooms": 0,
+    "bathrooms": 1,
+    "photo": "https://via.placeholder.com/150/FF33FF/FFFFFF?text=Studio"
+  },
+  {
+    "id": 18,
+    "type": "Terrace House",
+    "budget": "$280,000",
+    "area": "1300 sqft",
+    "location": "1515 Terrace Ave, Suburbia",
+    "bedrooms": 3,
+    "bathrooms": 2,
+    "photo": "https://via.placeholder.com/150/33A1FF/FFFFFF?text=Terrace+House"
+  },
+  {
+    "id": 19,
+    "type": "Mobile Home",
+    "budget": "$100,000",
+    "area": "700 sqft",
+    "location": "1616 Mobile Lane, Trailer Park",
+    "bedrooms": 2,
+    "bathrooms": 1,
+    "photo": "https://via.placeholder.com/150/A1FF33/FFFFFF?text=Mobile+Home"
+  },
+  {
+    "id": 20,
+    "type": "Tiny House",
+    "budget": "$120,000",
+    "area": "400 sqft",
+    "location": "1717 Tiny St, Smallville",
+    "bedrooms": 1,
+    "bathrooms": 1,
+    "photo": "https://via.placeholder.com/150/FF5733/FFFFFF?text=Tiny+House"
+  }
+]
