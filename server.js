@@ -22,7 +22,7 @@ app.use(cors({
 const server = http.createServer(app);
 const io = socketIo(server, {
   cors: {
-    origin: 'http://localhost:3000',
+    origin: ['http://localhost:3000', 'https://your-frontend-domain.vercel.app'],
     methods: ['GET', 'POST'],
     credentials: true
   }
@@ -33,17 +33,34 @@ const service = process.env.SERVICE;
 // Load properties from JSON file
 const properties = JSON.parse(fs.readFileSync(path.join(__dirname, 'properties.json'), 'utf8'));
 
+// Add these routes before your socket.io setup
+app.get('/', (req, res) => {
+  res.send('Chatbot Backend Server is Running!');
+});
+
+app.get('/health', (req, res) => {
+  res.json({
+    status: 'ok',
+    timestamp: new Date(),
+    service: process.env.SERVICE,
+    socketConnections: io.engine.clientsCount
+  });
+});
+
 io.on('connection', (socket) => {
-  console.log('New client connected');
+  console.log(`New client connected. Total connections: ${io.engine.clientsCount}`);
+  console.log('Client ID:', socket.id);
 
   // Initialize conversation history for this connection
   let conversationHistory = [];
 
   socket.on('disconnect', () => {
-    console.log('Client disconnected');
+    console.log(`Client disconnected. Remaining connections: ${io.engine.clientsCount}`);
+    console.log('Disconnected ID:', socket.id);
   });
 
   socket.on('message', async (msg) => {
+    console.log(`Message received from ${socket.id}:`, msg);
     console.log('Received message from client:', msg);
 
     try {
@@ -88,6 +105,18 @@ io.on('connection', (socket) => {
 const PORT = process.env.PORT || 4000;
 server.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
+});
+
+// Add this just before your server.listen
+app.get('/debug', (req, res) => {
+  res.json({
+    environment: process.env.NODE_ENV,
+    service: process.env.SERVICE,
+    activeConnections: io.engine.clientsCount,
+    uptime: process.uptime(),
+    memoryUsage: process.memoryUsage(),
+    timestamp: new Date().toISOString()
+  });
 });
 
 // Example function to get properties
