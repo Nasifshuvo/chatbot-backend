@@ -1,15 +1,14 @@
-const path = require('path'); // Import path module first
-require('dotenv').config({ path: path.resolve(__dirname, '.env') }); // Load .env file from the backend directory
+const path = require('path');
+require('dotenv').config({ path: path.resolve(__dirname, '.env') });
 const express = require('express');
 const http = require('http');
 const socketIo = require('socket.io');
 const cors = require('cors');
 const fs = require('fs');
-const { sequelize, Message } = require('./models');
-const handleGPTMessage = require('./gptWorker2'); // Correctly import the function
+const handleGPTMessage = require('./gptWorker2');
+const handleHuggingFaceMessage = require('./huggingFaceWorker');
 const handleClaudeMessage = require('./claudeWorker');
 const handleRasaMessage = require('./rasaWorker');
-const handleHuggingFaceMessage = require('./huggingFaceWorker');
 
 const app = express();
 
@@ -22,7 +21,7 @@ app.use(cors({
 const server = http.createServer(app);
 const io = socketIo(server, {
   cors: {
-    origin: ['http://localhost:3000', 'https://your-frontend-domain.vercel.app'],
+    origin: 'http://localhost:3000',
     methods: ['GET', 'POST'],
     credentials: true
   }
@@ -33,7 +32,7 @@ const service = process.env.SERVICE;
 // Load properties from JSON file
 const properties = JSON.parse(fs.readFileSync(path.join(__dirname, 'properties.json'), 'utf8'));
 
-// Add these routes before your socket.io setup
+// Add health check endpoints
 app.get('/', (req, res) => {
   res.send('Chatbot Backend Server is Running!');
 });
@@ -61,7 +60,6 @@ io.on('connection', (socket) => {
 
   socket.on('message', async (msg) => {
     console.log(`Message received from ${socket.id}:`, msg);
-    console.log('Received message from client:', msg);
 
     try {
       let responseText = '';
@@ -102,12 +100,6 @@ io.on('connection', (socket) => {
   });
 });
 
-const PORT = process.env.PORT || 4000;
-server.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
-});
-
-// Add this just before your server.listen
 app.get('/debug', (req, res) => {
   res.json({
     environment: process.env.NODE_ENV,
@@ -119,7 +111,7 @@ app.get('/debug', (req, res) => {
   });
 });
 
-// Example function to get properties
-function getProperties() {
-  return properties;
-}
+const PORT = process.env.PORT || 4000;
+server.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
+});
