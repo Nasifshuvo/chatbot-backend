@@ -198,5 +198,105 @@
     "bedrooms": 1,
     "bathrooms": 1,
     "photo": "https://via.placeholder.com/150/FF5733/FFFFFF?text=Tiny+House"
+  },
+  {
+    "id": 21,
+    "type": "Single Family Home",
+    "budget": "$320,000",
+    "area": "1700 sqft",
+    "location": "1818 Oak Street, Riverside",
+    "bedrooms": 3,
+    "bathrooms": 2,
+    "photo": "https://via.placeholder.com/150/33FF57/FFFFFF?text=Home"
+  },
+  {
+    "id": 22,
+    "type": "Apartment",
+    "budget": "$175,000",
+    "area": "850 sqft",
+    "location": "1919 High Rise Ave, Downtown",
+    "bedrooms": 2,
+    "bathrooms": 1,
+    "photo": "https://via.placeholder.com/150/3357FF/FFFFFF?text=Apartment"
+  },
+  {
+    "id": 23,
+    "type": "Townhouse",
+    "budget": "$425,000",
+    "area": "2100 sqft",
+    "location": "2020 Park View, Green Valley",
+    "bedrooms": 4,
+    "bathrooms": 3,
+    "photo": "https://via.placeholder.com/150/FF33A1/FFFFFF?text=Townhouse"
+  },
+  {
+    "id": 24,
+    "type": "Cottage",
+    "budget": "$195,000",
+    "area": "900 sqft",
+    "location": "2121 Lake Road, Waterfront",
+    "bedrooms": 2,
+    "bathrooms": 1,
+    "photo": "https://via.placeholder.com/150/FF33FF/FFFFFF?text=Cottage"
+  },
+  {
+    "id": 25,
+    "type": "Villa",
+    "budget": "$550,000",
+    "area": "2800 sqft",
+    "location": "2222 Sunset Blvd, Hills Area",
+    "bedrooms": 4,
+    "bathrooms": 3,
+    "photo": "https://via.placeholder.com/150/33A1FF/FFFFFF?text=Villa"
+  },
+  {
+    "id": 26,
+    "type": "Penthouse",
+    "budget": "$850,000",
+    "area": "2000 sqft",
+    "location": "2323 Sky Drive, City View",
+    "bedrooms": 3,
+    "bathrooms": 3,
+    "photo": "https://via.placeholder.com/150/A1FF33/FFFFFF?text=Penthouse"
+  },
+  {
+    "id": 27,
+    "type": "Ranch",
+    "budget": "$475,000",
+    "area": "2600 sqft",
+    "location": "2424 Country Lane, Outskirts",
+    "bedrooms": 4,
+    "bathrooms": 2,
+    "photo": "https://via.placeholder.com/150/FF5733/FFFFFF?text=Ranch"
+  },
+  {
+    "id": 28,
+    "type": "Bungalow",
+    "budget": "$235,000",
+    "area": "1200 sqft",
+    "location": "2525 Garden Road, Flowertown",
+    "bedrooms": 3,
+    "bathrooms": 2,
+    "photo": "https://via.placeholder.com/150/33FF57/FFFFFF?text=Bungalow"
+  },
+  {
+    "id": 29,
+    "type": "Duplex",
+    "budget": "$380,000",
+    "area": "1600 sqft",
+    "location": "2626 Twin Street, Dual City",
+    "bedrooms": 4,
+    "bathrooms": 2,
+    "photo": "https://via.placeholder.com/150/3357FF/FFFFFF?text=Duplex"
+  },
+  {
+    "id": 30,
+    "type": "Studio",
+    "budget": "$145,000",
+    "area": "450 sqft",
+    "location": "2727 Artist Way, Arts District",
+    "bedrooms": 0,
+    "bathrooms": 1,
+    "photo": "https://via.placeholder.com/150/FF33A1/FFFFFF?text=Studio"
   }
 ]

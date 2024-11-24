@@ -1,67 +1,85 @@
 const axios = require('axios');
-const { getProperties } = require('./propertyUtils');
+const { getProperties, bookAppointment } = require('./propertyUtils');
 
 async function handleGPTMessage(msg, apiKey, conversationHistory = []) {
   try {
-    console.log('Sending to GPT:', msg); // Log the message being sent to GPT
+    console.log('Sending to GPT:', msg);
 
     const response = await axios.post('https://api.openai.com/v1/chat/completions', {
       model: "gpt-4o-mini",
       messages: [
         { role: "system", 
           content: 
-          `You are a helpful foreclosure real estate assistant. 
-          Use [call:getProperties, parameters:{
+          `You are a helpful and flexible foreclosure real estate assistant. Focus on being user-friendly and accommodating. 
+          If you need property information from databse then call function by following the rule below.
+          Then the backend will send you the search result. Then with the result process text and response.
+
+          CRITICAL RULES:
+          1. NEVER just talk about searching - ALWAYS execute the search immediately
+          2. When user says "no" or has no preferences, IMMEDIATELY search with these defaults:
+             [call:getProperties, parameters:{
+               bedrooms: {min: 2},
+               price: {max: null},
+               location: null,
+               type: null,
+               bathrooms: null,
+               area: null
+             }]
+          3. When user asks about properties or location, but you haven't searched yet:
+             - Execute search immediately with available criteria
+             - Don't say "I will search" or "please hold"
+          4. After EVERY search, immediately follow up with:
+             - If results found: Present the properties
+             - If no results: Suggest booking an agent appointment
+
+          AUTOMATIC SEARCH TRIGGERS:
+          - User says "no" → Execute default search
+          - User mentions any criteria → Search with that criteria
+          - User asks about properties → Search with known criteria
+          - User seems confused/waiting → Execute search with what you know
+
+          For property search, use:
+          [call:getProperties, parameters:{
             type:string | null, 
             location:string | null, 
-            price:{
-              min:number | null, 
-              max:number | null
-            }, 
-            bedrooms:{
-              min:number | null, 
-              max:number | null
-            }, 
-            bathrooms:{
-              min:number | null, 
-              max:number | null
-            }, 
-            area:{
-              min:number | null, 
-              max:number | null
-            }
-          }] to request data from the backend. 
+            price:{min:number | null, max:number | null}, 
+            bedrooms:{min:number | null, max:number | null}, 
+            bathrooms:{min:number | null, max:number | null}, 
+            area:{min:number | null, max:number | null}
+          }]
 
-          When you receive [ALTERNATE_SUGGESTIONS], format your response naturally:
-          
-          For ALTERNATE_LOCATION suggestions:
-          - Acknowledge that the requested location isn't available
-          - Present the alternative locations enthusiastically
-          - Highlight the benefits of the suggested properties
-          
-          For ALTERNATE_BEDROOMS suggestions:
-          - Explain that the exact bedroom count isn't available
-          - Present the closest alternatives
-          - Emphasize the benefits of slightly larger/smaller options
-          
-          For ALTERNATE_PRICE suggestions:
-          - Acknowledge the budget constraints
-          - Present slightly higher-priced options tactfully
-          - Highlight the additional value these properties offer
+          For booking appointments, use:
+          [call:bookAppointment, parameters:{
+            name: string,
+            phone: string,
+            email: string,
+            date: string,
+            time: string,
+            propertyDetails: string
+          }]
 
-          Always:
-          - Format prices in a readable way ($XXX,XXX)
-          - Highlight key features of each property
+          NEVER SAY:
+          - "I will search"
+          - "Please hold"
+          - "Let me find"
+          - "I'll look for"
+          
+          INSTEAD, JUST EXECUTE THE SEARCH IMMEDIATELY!
 
-          For booking:
-          - If user wants to book a property, confirm the property details with them and ask for Name, Phone Number, Email
-          - Ask for a date and preferred time for the booking
-          - After booking, send a confirmation message with the property details and booking details
-          - Inform that our agent will contact the user` },
+          When you receive [ALTERNATE_SUGGESTIONS]:
+          - Present alternatives naturally
+          - Highlight key features
+          - Keep the tone helpful and positive
+
+          If no properties found:
+          - Immediately suggest booking an appointment
+          - Use bookAppointment call with available information
+
+          Always maintain a helpful, flexible approach.` },
         ...conversationHistory,
         { role: "user", content: msg }
       ],
-      max_tokens: 300
+      max_tokens: 600
     }, {
       headers: {
         'Content-Type': 'application/json',
@@ -70,29 +88,27 @@ async function handleGPTMessage(msg, apiKey, conversationHistory = []) {
     });
 
     const gptResponse = response.data.choices[0].message.content.trim();
-    console.log('Received from GPT:', gptResponse); // Log the response received from GPT
+    console.log('Received from GPT:', gptResponse);
 
-    // Update the pattern to handle multiline responses with whitespace
     const pattern2 = /\[call:(\w+),\s*parameters:\s*\{([\s\S]+?)\}\]/;
 
     const callMatch = gptResponse.match(pattern2);
 
     if (!callMatch) {
-      return `[text: ${JSON.stringify(gptResponse)}]`;
+      return gptResponse.startsWith('[text:') ? gptResponse : `[text: ${JSON.stringify(gptResponse)}]`;
     } else {
       const functionName = callMatch[1];
       
-      // Clean up the parameters string by removing newlines and extra spaces
       const parametersString = `{${callMatch[2]}}`
-        .replace(/\n\s*/g, ' ')  // Replace newlines and following spaces with a single space
-        .replace(/(\w+):/g, '"$1":');  // Add quotes to keys
+        .replace(/\n\s*/g, ' ')
+        .replace(/(\w+):/g, '"$1":');
       let parameters;
 
       try {
-        parameters = JSON.parse(parametersString); // Now this should work correctly
+        parameters = JSON.parse(parametersString);
       } catch (error) {
         console.error("JSON parsing error:", error);
-        return `[text: ${JSON.stringify(gptResponse)}]`; // Return the response in case of error
+        return `[text: ${JSON.stringify(gptResponse)}]`;
       }
       
       console.log('Function name:', functionName);
@@ -104,12 +120,10 @@ async function handleGPTMessage(msg, apiKey, conversationHistory = []) {
         case 'getProperties':
           const propertyResults = getProperties(parameters);
           
-          // If no exact matches found, try relaxed search automatically
           if (propertyResults.properties.length === 0) {
             let suggestedProperties = null;
             let relaxationType = '';
 
-            // Try without location
             if (parameters.location) {
               const noLocationResults = getProperties({
                 ...parameters,
@@ -121,7 +135,6 @@ async function handleGPTMessage(msg, apiKey, conversationHistory = []) {
               }
             }
 
-            // Try with expanded bedrooms if no results yet
             if (!suggestedProperties && parameters.bedrooms) {
               const relaxedBedroomsResults = getProperties({
                 ...parameters,
@@ -136,13 +149,12 @@ async function handleGPTMessage(msg, apiKey, conversationHistory = []) {
               }
             }
 
-            // Try with increased budget if still no results
             if (!suggestedProperties && parameters.price && parameters.price.max) {
               const relaxedPriceResults = getProperties({
                 ...parameters,
                 price: {
                   ...parameters.price,
-                  max: parameters.price.max * 1.2 // 20% increase
+                  max: parameters.price.max * 1.2
                 }
               });
               if (relaxedPriceResults.properties.length > 0) {
@@ -163,7 +175,6 @@ async function handleGPTMessage(msg, apiKey, conversationHistory = []) {
                 properties: suggestedProperties.properties
               };
               
-              // Send this structured data back to GPT for natural language processing
               return await handleGPTMessage(
                 `[ALTERNATE_SUGGESTIONS: ${JSON.stringify(alternateResponse)}]`, 
                 apiKey, 
@@ -174,14 +185,19 @@ async function handleGPTMessage(msg, apiKey, conversationHistory = []) {
           
           dataResponse = `[response: ${JSON.stringify(propertyResults)}]`;
           break;
-        // Add more cases for other functions
+        case 'bookAppointment':
+          const bookingResult = await bookAppointment({
+            ...parameters,
+            conversationHistory: [...conversationHistory, { role: "assistant", content: gptResponse }]
+          });
+          dataResponse = `[text: ${JSON.stringify(bookingResult.message)}]`;
+          break;
         default:
-          dataResponse = `[text: ${JSON.stringify(gptResponse)}]`; // Return the text for unhandled cases
+          dataResponse = `[text: ${JSON.stringify(gptResponse)}]`;
           break;
       }
 
-      console.log('Data response to GPT:', dataResponse); // Log the data response being sent back to GPT
-      // Send the data response back to GPT
+      console.log('Data response to GPT:', dataResponse);
       return await handleGPTMessage(dataResponse, apiKey, [...conversationHistory, { role: "assistant", content: gptResponse }]);
     }
   } catch (error) {
