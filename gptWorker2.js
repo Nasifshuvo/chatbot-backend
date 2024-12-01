@@ -10,7 +10,7 @@ async function handleGPTMessage(msg, apiKey, conversationHistory = []) {
       messages: [
         { role: "system", 
           content: 
-          `You are a helpful foreclosure real estate assistant. 
+          `You are a helpful foreclosure real estate assistant. Do not help outside this topic. 
           Use [call:getProperties, parameters:{
             type:string | null, 
             location:string | null, 
@@ -74,10 +74,12 @@ async function handleGPTMessage(msg, apiKey, conversationHistory = []) {
 
     // Update the pattern to handle multiline responses with whitespace
     const pattern2 = /\[call:(\w+),\s*parameters:\s*\{([\s\S]+?)\}\]/;
+    const textPattern = /\[text: ([\s\S]+?)\]/;
 
     const callMatch = gptResponse.match(pattern2);
+    const textMatch = gptResponse.match(textPattern);
 
-    if (!callMatch) {
+    if (!callMatch && !textMatch) {
       return `[text: ${JSON.stringify(gptResponse)}]`;
     } else {
       const functionName = callMatch[1];
